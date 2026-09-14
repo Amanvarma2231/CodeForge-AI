@@ -381,6 +381,7 @@ function formatAiResponse(content, language) {
           <div class="code-actions">
             <button class="btn-code-action btn-copy-code" data-code="${encodeURIComponent(block.code)}">📋 Copy</button>
             <button class="btn-code-action btn-dl-code"   data-code="${encodeURIComponent(block.code)}" data-fmt="py">📄 .py</button>
+            <button class="btn-code-action btn-dl-code"   data-code="${encodeURIComponent(block.code)}" data-fmt="tar.gz">📦 .tar.gz</button>
             <button class="btn-code-action btn-dl-code"   data-code="${encodeURIComponent(block.code)}" data-fmt="zip">📦 .zip</button>
           </div>
         </div>
