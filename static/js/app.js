@@ -510,8 +510,10 @@ async function sendPrompt() {
   }
   if (state.isGenerating) return;
 
-  const currentSession = getSession(state.activeSessionId);
-  if (!currentSession) return;
+  let currentSession = getSession(state.activeSessionId);
+  if (!currentSession) {
+    currentSession = createNewSession(true);
+  }
 
   // Auto-generate session title on first message
   if (currentSession.messages.length === 0) {
@@ -759,7 +761,7 @@ function setupEventListeners() {
   });
 
   ta.onkeydown = e => {
-    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       sendPrompt();
     }
