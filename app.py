@@ -201,9 +201,19 @@ def call_ai_provider(provider_id: str, prompt: str, language: str = "python",
     try:
         r = requests.post(cfg["api_url"], headers=headers, json=payload, timeout=90)
         r.raise_for_status()
-        msg_obj  = res_data["choices"][0]["message"]
-        text     = (msg_obj.get("content") or msg_obj.get("reasoning_content") or "").strip()
-        tokens   = res_data.get("usage", {}).get("total_tokens", 0)
+        res_data  = r.json()
+        msg_obj   = res_data["choices"][0]["message"]
+        c_text    = msg_obj.get("content") or ""
+        r_text    = msg_obj.get("reasoning_content") or ""
+        
+        if c_text and str(c_text).strip():
+            text = str(c_text).strip()
+        elif r_text and str(r_text).strip():
+            text = str(r_text).strip()
+        else:
+            text = "Response generated successfully."
+
+        tokens = res_data.get("usage", {}).get("total_tokens", 0)
         return {
             "success":   True,
             "code":      text,
@@ -257,9 +267,9 @@ To get real AI responses:
 3. **Save** and try again — your key is stored securely in your browser
 
 **Get your API key:**
-- **Google Gemini** → [Google AI Studio](https://aistudio.google.com/app/apikey) (Free tier available)
 - **Sarvam AI** → [dashboard.sarvam.ai](https://dashboard.sarvam.ai)
 - **NVIDIA Nemotron** → [build.nvidia.com](https://build.nvidia.com)
+- **Bonsai AI** → [api.bonsai.ai](https://api.bonsai.ai)
 
 Once configured, you can ask me **anything** — coding questions, explanations, general knowledge, math, writing, analysis, and more!
 """
