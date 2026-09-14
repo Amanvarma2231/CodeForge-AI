@@ -586,7 +586,7 @@ async function sendPrompt() {
 
     const elapsed = ((Date.now() - t0) / 1000).toFixed(2);
 
-    const prov = PROVIDERS[state.currentProvider] || PROVIDERS.gemini;
+    const prov = PROVIDERS[state.currentProvider] || PROVIDERS.sarvam;
 
     const assistantMsg = {
       role:         "assistant",
