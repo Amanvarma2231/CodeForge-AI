@@ -126,11 +126,11 @@ def build_system_prompt(mode: str = "general", language: str = "python") -> str:
     return base
 
 
-def call_ai_provider(provider_id: str, prompt: str, language: str = "python",
-                     images: list = None, context: str = "",
-                     user_key: str = None, history: list = None) -> dict:
+def _execute_provider_call(provider_id: str, prompt: str, language: str = "python",
+                           images: list = None, context: str = "", user_key: str = "",
+                           history: list = None) -> dict:
     """
-    Unified multi-model API call. Supports Gemini, Sarvam, Nemotron, Bonsai.
+    Unified multi-model API call. Supports Sarvam, Nemotron, Bonsai.
     Accepts user API key or falls back to server env var.
     Falls back to demo/mock if no key available.
     """
@@ -233,6 +233,24 @@ def call_ai_provider(provider_id: str, prompt: str, language: str = "python",
         return {"success": False, "error": f"{cfg['name']} API Error {status}: {detail or str(e)}"}
     except Exception as e:
         return {"success": False, "error": f"{cfg['name']} request failed: {str(e)}"}
+
+
+def call_ai_provider(provider_id: str, prompt: str, language: str = "python",
+                     images: list = None, context: str = "", user_key: str = "",
+                     history: list = None) -> dict:
+    """
+    Main dispatcher for AI calls with Sarvam AI fallback guarantee.
+    """
+    res = _execute_provider_call(provider_id, prompt, language, images, context, user_key, history)
+    
+    # If chosen provider fails or returns error, fallback to Sarvam AI so Generate ALWAYS answers!
+    if not res.get("success") and provider_id != "sarvam":
+        sarvam_res = _execute_provider_call("sarvam", prompt, language, images, context, "", history)
+        if sarvam_res.get("success"):
+            sarvam_res["message"] = f"Generated using Sarvam AI ({AI_PROVIDERS.get(provider_id, {}).get('name', provider_id)} backup)"
+            return sarvam_res
+            
+    return res
 
 
 # ─── DEMO / MOCK RESPONSE (No API Key) ────────────────────────────────────────
