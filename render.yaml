@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: codeforge-ai-studio
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+    envVars:
+      - key: SARVAM_API_KEY
+        sync: false
+      - key: NVIDIA_API_KEY
+        sync: false
+      - key: BONSAI_API_KEY
+        sync: false
+      - key: FLASK_SECRET_KEY
+        generateValue: true
