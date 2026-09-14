@@ -63,9 +63,9 @@ AI_PROVIDERS = {
     },
     "nemotron": {
         "name":        "NVIDIA Nemotron",
-        "description": "NVIDIA Nemotron — High-performance enterprise AI model",
+        "description": "NVIDIA enterprise Llama 3.1 70B — powerful general AI",
         "api_url":     "https://integrate.api.nvidia.com/v1/chat/completions",
-        "model":       "mistralai/mistral-nemotron",
+        "model":       "nvidia/llama-3.1-nemotron-70b-instruct",
         "env_key":     "NVIDIA_API_KEY",
         "color":       "#76B900",
         "icon":        "⚡",

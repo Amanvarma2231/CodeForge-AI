@@ -1,7 +1,10 @@
-venv/
+.env
 __pycache__/
 *.pyc
-.env
 uploads/*
+!uploads/.gitkeep
 downloads/*
+!downloads/.gitkeep
+.venv/
+venv/
 .DS_Store
